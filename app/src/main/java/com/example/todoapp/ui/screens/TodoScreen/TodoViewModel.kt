@@ -1,38 +1,37 @@
 package com.example.todoapp.ui.screens.TodoScreen
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
+import com.example.todoapp.data.database.TodoDatabase
 import com.example.todoapp.data.model.Todo
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import com.example.todoapp.data.repository.TodoRepository
+import kotlinx.coroutines.launch
 
-class TodoViewModel: ViewModel() {
-    private val _todos = MutableStateFlow<List<Todo>>(emptyList())
-    val todos: StateFlow<List<Todo>> = _todos
+class TodoViewModel(application: Application): AndroidViewModel(application) {
+    private val repository: TodoRepository
+    val todos: LiveData<List<Todo>>
 
-    fun addTodo(title: String) {
-        val newTodo = Todo(
-            _todos.value.size + 1,
-            title,
-            false
-        )
-        _todos.value += newTodo
+    init {
+        val dao = TodoDatabase.getDatabase(application).todoDao()
+        repository = TodoRepository(dao)
+        todos = repository.allTodos
     }
 
-    fun toggleTodo(todo: Todo) {
-        _todos.value = _todos.value.map {
-            if (todo.id == it.id) {
-                it.copy(isCompleted = !todo.isCompleted)
-            } else {
-                it
-            }
-        }
+    fun addTodo(title: String) = viewModelScope.launch {
+        repository.addTodo(Todo(title = title, isCompleted = false))
     }
 
-    fun deleteTodo(todo: Todo) {
-        _todos.value = _todos.value.filter { it.id != todo.id }
+    fun toggleTodo(todo: Todo) = viewModelScope.launch {
+        repository.updateTodo(todo.copy(isCompleted = !todo.isCompleted))
     }
 
-    fun clearCompletedTodo() {
-        _todos.value = _todos.value.filter { !it.isCompleted }
+    fun deleteTodo(todo: Todo) = viewModelScope.launch {
+        repository.deleteTodo(todo)
+    }
+
+    fun clearCompletedTodos() = viewModelScope.launch {
+        repository.clearCompletedTodos()
     }
 }

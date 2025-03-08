@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val viewModel = TodoViewModel()
+        val viewModel = TodoViewModel(this.application)
 
         setContent {
             ToDoAppTheme {
