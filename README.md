@@ -1,9 +1,6 @@
 # ✅ To-Do List App - Jetpack Compose + Room + MVVM
 A modern, fast, and intuitive task management app developed with **Jetpack Compose**, **Room**, and the **MVVM** architecture.
 
-# 📸 Preview
-![./Screenshot_20250311_113309.png]
-
 # ✨ Features
 ✅ Add new tasks to the list ➕
 ✅ Mark tasks as completed ✅
@@ -47,3 +44,7 @@ Open the project in Android Studio, and run the app on an emulator or physical d
 
 # 🚀 Why This Project?
 This project was designed to strengthen my skills in Jetpack Compose and modern Android development, while practicing core concepts such as MVVM architecture, local persistence, and reactive state management. It also provides a solid base for more complex apps (project management, collaborative tools, etc.).
+
+
+# 📸 Preview
+![screenshot](Screenshot_20250311_113309.png)
